@@ -9,8 +9,6 @@ format:
         css: "assignment.css"
 ---
 
-<!-- Guide to using quarto at https://quarto.org/docs/get-started/hello/rstudio.html -->
-
 ## Exercises
 
 #### 1. Basic math and computing (5pts)
