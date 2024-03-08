@@ -7,13 +7,39 @@ format:
     html:
         output-file: assign01-submission.html
         css: "assignment.css"
+execute: 
+  echo: false
+  message: false
+  warning: false
 ---
+
+```{r}
+library(tidyverse)
+library(tidymodels)
+library(ggplot2)
+library(highcharter)
+library(MASS)
+```
+
 
 ## Exercises
 
 #### 1. Basic math and computing (5pts)
 
-YOUR ANSWER HERE
+
+```{r}
+
+S <- rbind(c(3,1),c(1,2))
+X <- rbind(4,2)
+A <- rbind(1,-1)
+
+
+Matrix_calculation <- t(X-A) %*% solve(S) %*% (X-A)
+
+Matrix_calculation[1,1]
+```
+
+
 
 #### 2. ML concepts (8pts)
 
