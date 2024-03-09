@@ -93,6 +93,10 @@ The matrix calculation for computing $(X-A)^T S^{-1}(X-A)$ yields the result __`
 
 ## 2. ML concepts
 
+### a) Model accuracy
+
+
+
 ```{r}
 #| label: tbl-data
 #| tbl-cap: "Sample rows of the current data"
@@ -100,7 +104,7 @@ d_pred <- read_csv("https://raw.githubusercontent.com/numbats/iml/master/data/pr
 d_pred |> slice_head(n=3) %>% kbl()
 ```
 
-### Model 1 
+#### Model 1 
 
 ```{r}
 model_1 <- d_pred %>% dplyr::select(c("y","pred1","bilby1","quokka1"))
@@ -130,12 +134,12 @@ The balanced accuracy for `model 1` is found to be __`r bal_accuracy(model_1,y,p
 ```{r}
 #| label: fig-confmat1
 #| fig-cap: "Confusion matrix with key performance metrics of model 1"
-model_1_cm <- confusionMatrix(model_1$y,model_1$pred1)
+model_1_cm <- confusionMatrix(model_1$pred1,model_1$y)
 
 draw_confusion_matrix(model_1_cm)
 ```
 
-### Model 2 
+#### Model 2 
 
 
 
@@ -153,10 +157,49 @@ The accuracy for `model 2` which is calculated based on the number of true posit
 ```{r}
 #| label: fig-confmat2
 #| fig-cap: "Confusion matrix with key performance metrics of model 2"
-model_2_cm <- confusionMatrix(model_2$y,model_2$pred2)
+model_2_cm <- confusionMatrix(model_2$pred2,model_2$y)
 
 draw_confusion_matrix(model_2_cm)
 ```
+
+:::{.callout-note}
+# Key takeaway
+
+As we can observe from the model metrics in @fig-confmat1 and @fig-confmat2, the model 1 was observed to classify the labelled data more accurately than model 2.
+:::
+
+### b) Sensitivity and Specificity with revised threshold values
+
+#### 1) When the threshold value for classification is 0.3
+
+```{r}
+model_new_1a <- model_1
+model_new_1a <- model_new_1a %>% mutate(pred1 = if_else(bilby1 >= 0.3,"bilby","quokka")) 
+model_new_1a$y <- as.factor(model_new_1a$y)
+model_new_1a$pred1 <- as.factor(model_new_1a$pred1)
+
+
+
+cm_new_1a <- model_new_1a %>% count(y,pred1) %>% group_by(y) %>%
+  mutate(cl_acc = n[pred1==y]/sum(n)) %>% pivot_wider(names_from = pred1,
+                                                      values_from = n) %>%
+  dplyr::select(y,bilby,quokka,cl_acc)
+
+
+```
+
+The sensitivity for `model 1` when the threshold value for positive Bilby classification is 0.3 and above is __`r sens(model_new_1a,y,pred1) %>% pull(.estimate) %>% round(3)`__. The balanced accuracy for the same model which is based on the true positive and the true negative rates are  __`r spec(model_new_1a,y,pred1) %>% pull(.estimate) %>% round(3)`__.
+
+
+
+```{r}
+#| label: fig-confmat_new_1a
+#| fig-cap: "Confusion matrix with key performance metrics of model 1 when considering 0.3 as the threshold value for positive Bilby classification"
+model_new_1a_cm <- confusionMatrix(model_new_1a$pred1,model_new_1a$y)
+
+draw_confusion_matrix(model_new_1a_cm)
+```
+
 
 #### 3. Visualisation (8pts)
 

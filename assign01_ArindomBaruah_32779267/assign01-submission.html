@@ -130,6 +130,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="ml-concepts" class="level2">
 <h2 class="anchored" data-anchor-id="ml-concepts">2. ML concepts</h2>
+<section id="a-model-accuracy" class="level3">
+<h3 class="anchored" data-anchor-id="a-model-accuracy">a) Model accuracy</h3>
 <div class="cell">
 <div class="cell-output-display">
 <div id="tbl-data" class="anchored">
@@ -181,8 +183,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </div>
 </div>
-<section id="model-1" class="level3">
-<h3 class="anchored" data-anchor-id="model-1">Model 1</h3>
+<section id="model-1" class="level4">
+<h4 class="anchored" data-anchor-id="model-1">Model 1</h4>
 <p>The accuracy for <code>model 1</code> which is calculated based on the number of true positives and the true negatives is observed to be <strong>0.778</strong>.</p>
 <p>However, the accuracy parameter for a model may not always be the best indicator. This is especially true when the data may contain unbalanced class distribution. In this case, we will rely on balanced accuracy which is based on the true positive and the true negative rate of prediction for the model.</p>
 <p>The balanced accuracy for <code>model 1</code> is found to be <strong>0.775</strong>.</p>
@@ -198,8 +200,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="model-2" class="level3">
-<h3 class="anchored" data-anchor-id="model-2">Model 2</h3>
+<section id="model-2" class="level4">
+<h4 class="anchored" data-anchor-id="model-2">Model 2</h4>
 <p>The accuracy for <code>model 2</code> which is calculated based on the number of true positives and the true negatives is observed to be <strong>0.63</strong>. The balanced accuracy for the same model which is based on the true positive and the true negative rates are <strong>0.629</strong>.</p>
 <p><a href="#fig-confmat2">Figure&nbsp;2</a> illustrates the detailed confusion matrix for <code>model 2</code>.</p>
 <div class="cell">
@@ -212,6 +214,37 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Key takeaway
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>As we can observe from the model metrics in <a href="#fig-confmat1">Figure&nbsp;1</a> and <a href="#fig-confmat2">Figure&nbsp;2</a>, the model 1 was observed to classify the labelled data more accurately than model 2.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="b-sensitivity-and-specificity-with-revised-threshold-values" class="level3">
+<h3 class="anchored" data-anchor-id="b-sensitivity-and-specificity-with-revised-threshold-values">b) Sensitivity and Specificity with revised threshold values</h3>
+<section id="when-the-threshold-value-for-classification-is-0.3" class="level4">
+<h4 class="anchored" data-anchor-id="when-the-threshold-value-for-classification-is-0.3">1) When the threshold value for classification is 0.3</h4>
+<p>The sensitivity for <code>model 1</code> when the threshold value for positive Bilby classification is 0.3 and above is <strong>0.958</strong>. The balanced accuracy for the same model which is based on the true positive and the true negative rates are <strong>0.233</strong>.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-confmat_new_1a" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="assign01-submission_Arindom_32779267_files/figure-html/fig-confmat_new_1a-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption class="figure-caption">Figure&nbsp;3: Confusion matrix with key performance metrics of model 1 when considering 0.3 as the threshold value for positive Bilby classification</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
 <section id="visualisation-8pts" class="level4">
 <h4 class="anchored" data-anchor-id="visualisation-8pts">3. Visualisation (8pts)</h4>
 <p>YOUR ANSWER HERE</p>
