@@ -68,13 +68,14 @@ draw_confusion_matrix <- function(cm) {
 library(tidyverse)
 library(tidymodels)
 library(ggplot2)
+library(kableExtra)
 library(caret)
 ```
 
 
-## Exercises
+# Exercises
 
-#### 1. Basic math and computing (5pts)
+## 1. Basic math and computing 
 
 
 ```{r echo=TRUE}
@@ -90,14 +91,16 @@ Matrix_calculation <- t(X-A) %*% solve(S) %*% (X-A)
 The matrix calculation for computing $(X-A)^T S^{-1}(X-A)$ yields the result __`r Matrix_calculation[1,1]`__.
 
 
-#### 2. ML concepts (8pts)
+## 2. ML concepts
 
 ```{r}
+#| label: tbl-data
+#| tbl-cap: "Sample rows of the current data"
 d_pred <- read_csv("https://raw.githubusercontent.com/numbats/iml/master/data/pred_data.csv")
-d_pred |> slice_head(n=3)
+d_pred |> slice_head(n=3) %>% kbl()
 ```
 
-
+### Model 1 
 
 ```{r}
 model_1 <- d_pred %>% dplyr::select(c("y","pred1","bilby1","quokka1"))
@@ -105,6 +108,8 @@ model_1 <- d_pred %>% dplyr::select(c("y","pred1","bilby1","quokka1"))
 model_1$y <- as.factor(model_1$y)
 model_1$pred1 <- as.factor(model_1$pred1)
 model_2 <- d_pred %>% dplyr::select(c("y","pred2","bilby2","quokka2"))
+model_2$y <- as.factor(model_2$y)
+model_2$pred2 <- as.factor(model_2$pred2)
 ```
 
 ```{r}
@@ -120,7 +125,7 @@ However, the accuracy parameter for a model may not always be the best indicator
 
 The balanced accuracy for `model 1` is found to be __`r bal_accuracy(model_1,y,pred1) %>% pull(.estimate) %>% round(3)`__.
 
-@fig-confmat1 illustrates the detailed confusion matrix for `model 1` with the 
+@fig-confmat1 illustrates the detailed confusion matrix for `model 1` with the critical model parameters which are useful indicators of model performance.
 
 ```{r}
 #| label: fig-confmat1
@@ -130,11 +135,28 @@ model_1_cm <- confusionMatrix(model_1$y,model_1$pred1)
 draw_confusion_matrix(model_1_cm)
 ```
 
+### Model 2 
 
 
 
+```{r}
+cm_2 <- model_2 %>% count(y,pred2) %>% group_by(y) %>%
+  mutate(cl_acc = n[pred2==y]/sum(n)) %>% pivot_wider(names_from = pred2,
+                                                      values_from = n) %>%
+  dplyr::select(y,bilby,quokka,cl_acc)
+```
 
+The accuracy for `model 2` which is calculated based on the number of true positives and the true negatives is observed to be __`r accuracy(model_2,y,pred2) %>% pull(.estimate) %>% round(3)`__. The balanced accuracy for the same model which is based on the true positive and the true negative rates are  __`r bal_accuracy(model_2,y,pred2) %>% pull(.estimate) %>% round(3)`__.
 
+@fig-confmat2 illustrates the detailed confusion matrix for `model 2`. 
+
+```{r}
+#| label: fig-confmat2
+#| fig-cap: "Confusion matrix with key performance metrics of model 2"
+model_2_cm <- confusionMatrix(model_2$y,model_2$pred2)
+
+draw_confusion_matrix(model_2_cm)
+```
 
 #### 3. Visualisation (8pts)
 
