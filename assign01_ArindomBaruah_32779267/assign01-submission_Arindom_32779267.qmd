@@ -226,6 +226,67 @@ model_new_1b_cm <- confusionMatrix(model_new_1b$pred1,model_new_1b$y)
 draw_confusion_matrix(model_new_1b_cm)
 
 ```
+
+#### 3) When the threshold value for classification in model 2 is 0.3
+
+```{r}
+model_new_2a <- model_2
+model_new_2a <- model_new_2a %>% mutate(pred2 = if_else(bilby2 >= 0.3,"bilby","quokka")) 
+model_new_2a$y <- as.factor(model_new_2a$y)
+model_new_2a$pred2 <- as.factor(model_new_2a$pred2)
+
+
+
+model_new_2a_cm <- model_new_2a %>% count(y,pred2) %>% group_by(y) %>%
+  mutate(cl_acc = n[pred2==y]/sum(n)) %>% pivot_wider(names_from = pred2,
+                                                      values_from = n) %>%
+  dplyr::select(y,bilby,quokka,cl_acc)
+
+
+```
+
+The sensitivity for `model 1` when the threshold value for positive Bilby classification is 0.3 and above is __`r sens(model_new_1a,y,pred1) %>% pull(.estimate) %>% round(3)`__. The value for __1-Specificity__ for the same model which is based on the true positive and the true negative rates is  __`r 1-spec(model_new_1a,y,pred1) %>% pull(.estimate) %>% round(3)`__.
+
+
+
+```{r}
+#| label: fig-confmat_new_2a
+#| fig-cap: "Confusion matrix with key performance metrics of model 2 when considering 0.3 as the threshold value for positive Bilby classification"
+model_new_2a_cm <- confusionMatrix(model_new_2a$pred2,model_new_2a$y)
+
+draw_confusion_matrix(model_new_2a_cm)
+
+```
+
+#### 4) When the threshold value for classification in model 2 is 0.4
+
+```{r}
+model_new_2b <- model_2
+model_new_2b <- model_new_2b %>% mutate(pred2 = if_else(bilby2 >= 0.4,"bilby","quokka")) 
+model_new_2b$y <- as.factor(model_new_2b$y)
+model_new_2b$pred2 <- as.factor(model_new_2b$pred2)
+
+
+
+model_new_2b_cm <- model_new_2b %>% count(y,pred2) %>% group_by(y) %>%
+  mutate(cl_acc = n[pred2==y]/sum(n)) %>% pivot_wider(names_from = pred2,
+                                                      values_from = n) %>%
+  dplyr::select(y,bilby,quokka,cl_acc)
+
+
+```
+
+
+
+```{r}
+#| label: fig-confmat_new_2b
+#| fig-cap: "Confusion matrix with key performance metrics of model 2 when considering 0.4 as the threshold value for positive Bilby classification"
+model_new_2b_cm <- confusionMatrix(model_new_2b$pred2,model_new_2b$y)
+
+draw_confusion_matrix(model_new_2b_cm)
+
+```
+
 #### 3. Visualisation (8pts)
 
 YOUR ANSWER HERE
