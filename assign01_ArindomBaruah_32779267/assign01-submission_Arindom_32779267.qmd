@@ -70,6 +70,7 @@ library(tidymodels)
 library(ggplot2)
 library(kableExtra)
 library(caret)
+library(plotROC)
 ```
 
 
@@ -245,7 +246,7 @@ model_new_2a_cm <- model_new_2a %>% count(y,pred2) %>% group_by(y) %>%
 
 ```
 
-The sensitivity for `model 1` when the threshold value for positive Bilby classification is 0.3 and above is __`r sens(model_new_1a,y,pred1) %>% pull(.estimate) %>% round(3)`__. The value for __1-Specificity__ for the same model which is based on the true positive and the true negative rates is  __`r 1-spec(model_new_1a,y,pred1) %>% pull(.estimate) %>% round(3)`__.
+The sensitivity for `model 2` when the threshold value for positive Bilby classification is 0.3 and above is __`r sens(model_new_2a,y,pred2) %>% pull(.estimate) %>% round(3)`__. The value for __1-Specificity__ for the same model which is based on the true positive and the true negative rates is  __`r 1-spec(model_new_2a,y,pred2) %>% pull(.estimate) %>% round(3)`__. Other detailed model performance metrics for model 2 with a threshold value of 0.3 can be referred to in @fig-confmat_new_2a.
 
 
 
@@ -278,12 +279,39 @@ model_new_2b_cm <- model_new_2b %>% count(y,pred2) %>% group_by(y) %>%
 
 
 
+
 ```{r}
 #| label: fig-confmat_new_2b
 #| fig-cap: "Confusion matrix with key performance metrics of model 2 when considering 0.4 as the threshold value for positive Bilby classification"
 model_new_2b_cm <- confusionMatrix(model_new_2b$pred2,model_new_2b$y)
 
 draw_confusion_matrix(model_new_2b_cm)
+
+```
+
+The sensitivity for `model 2` when the threshold value for positive Bilby classification is 0.4 and above is __`r sens(model_new_2b,y,pred2) %>% pull(.estimate) %>% round(3)`__. The value for __1-Specificity__ for the same model which is based on the true positive and the true negative rates is  __`r 1-spec(model_new_2b,y,pred2) %>% pull(.estimate) %>% round(3)`__. Other detailed model performance metrics for model 2 with a threshold value of 0.3 can be referred to in @fig-confmat_new_2b.
+
+### c) Receiver Operative Curve (ROC) visualisation for model output
+
+```{r }
+#| label: fig-roc
+#| fig-cap: "Receiver Operative Curve visualisation for comparison of model performance based on Sensitivty and 1-Specificity"
+
+roc_curve_1 <- roc_curve(model_new_1b,y,bilby1) 
+roc_curve_2 <- roc_curve(model_new_2a,y,bilby2)
+
+pl1 <- ggplot() +
+  geom_path(data = roc_curve_1, aes(x = 1 - specificity, y = sensitivity, color = "Model 1"),size = 1.5) + 
+  geom_path(data = roc_curve_2, aes(x = 1 - specificity, y = sensitivity, color = "Model 2"),size = 1.5) + 
+  geom_abline(slope = 1,linetype = 2,alpha = 0.5) +
+  scale_color_manual(values = c("Model 1" = "blue", "Model 2" = "red")) +
+  ggtitle("Receiver Operating Curve for model comparison") + labs(colour = "Model type") + theme_minimal() + theme(plot.title = element_text(hjust = 0.5))
+pl1
+
+```
+
+```{r}
+roc_curve(model_new_1b,y,bilby1) %>% autoplot()
 
 ```
 
