@@ -170,7 +170,7 @@ As we can observe from the model metrics in @fig-confmat1 and @fig-confmat2, the
 
 ### b) Sensitivity and Specificity with revised threshold values
 
-#### 1) When the threshold value for classification is 0.3
+#### 1) When the threshold value for classification in model 1 is 0.3
 
 ```{r}
 model_new_1a <- model_1
@@ -188,7 +188,7 @@ cm_new_1a <- model_new_1a %>% count(y,pred1) %>% group_by(y) %>%
 
 ```
 
-The sensitivity for `model 1` when the threshold value for positive Bilby classification is 0.3 and above is __`r sens(model_new_1a,y,pred1) %>% pull(.estimate) %>% round(3)`__. The balanced accuracy for the same model which is based on the true positive and the true negative rates are  __`r spec(model_new_1a,y,pred1) %>% pull(.estimate) %>% round(3)`__.
+The sensitivity for `model 1` when the threshold value for positive Bilby classification is 0.3 and above is __`r sens(model_new_1a,y,pred1) %>% pull(.estimate) %>% round(3)`__. The value for __1-Specificity__ for the same model which is based on the true positive and the true negative rates is  __`r 1-spec(model_new_1a,y,pred1) %>% pull(.estimate) %>% round(3)`__.
 
 
 
@@ -198,9 +198,34 @@ The sensitivity for `model 1` when the threshold value for positive Bilby classi
 model_new_1a_cm <- confusionMatrix(model_new_1a$pred1,model_new_1a$y)
 
 draw_confusion_matrix(model_new_1a_cm)
+
+```
+#### 2) When the threshold value for classification in model 1 is 0.4
+
+```{r}
+model_new_1b <- model_1
+model_new_1b <- model_new_1b %>% mutate(pred1 = if_else(bilby1 >= 0.4,"bilby","quokka")) 
+model_new_1b$y <- as.factor(model_new_1b$y)
+model_new_1b$pred1 <- as.factor(model_new_1b$pred1)
+
+
+
+cm_new_1b <- model_new_1b %>% count(y,pred1) %>% group_by(y) %>%
+  mutate(cl_acc = n[pred1==y]/sum(n)) %>% pivot_wider(names_from = pred1,
+                                                      values_from = n) %>%
+  dplyr::select(y,bilby,quokka,cl_acc)
+
+
 ```
 
+```{r}
+#| label: fig-confmat_new_1b
+#| fig-cap: "Confusion matrix with key performance metrics of model 1 when considering 0.4 as the threshold value for positive Bilby classification"
+model_new_1b_cm <- confusionMatrix(model_new_1b$pred1,model_new_1b$y)
 
+draw_confusion_matrix(model_new_1b_cm)
+
+```
 #### 3. Visualisation (8pts)
 
 YOUR ANSWER HERE
