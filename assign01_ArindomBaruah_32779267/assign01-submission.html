@@ -313,37 +313,95 @@ Key takeaway
 <p>The higher the curve is to the top left point of the plot, the higher the true positive rate of the model (measured through sensitivity) as well as the least false positive rate (measured through 1-specificity).</p>
 </div>
 </div>
-<section id="visualisation" class="level4">
-<h4 class="anchored" data-anchor-id="visualisation">3. Visualisation</h4>
+</section>
+</section>
+<section id="visualisation" class="level2">
+<h2 class="anchored" data-anchor-id="visualisation">3. Visualisation</h2>
+<p>Here, we are required to visualise a high-dimensional data which contains 6 different variables. Due to the complexity of the data in hand and the multiple dimensions we are looking to study, it is often not possible to understand the correlation of each dimension through simple 2-dimensional plots such as scatter plots. Hence, we will be primarily studying the data through various high dimensional visualisation techniques, namely scatter plot matrix, UMAP and the grand tour.</p>
+<section id="a-2d-scatter-plot-matrix" class="level3">
+<h3 class="anchored" data-anchor-id="a-2d-scatter-plot-matrix">a) 2D Scatter plot matrix</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>gif_file <span class="ot">&lt;-</span> <span class="st">"animated_xy.gif"</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ani.options</span>(<span class="at">interval =</span> <span class="fl">0.1</span>, <span class="at">ani.width =</span> <span class="dv">500</span>, <span class="at">ani.height =</span> <span class="dv">400</span>)</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">saveGIF</span>({</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">animate_xy</span>(c7)</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>}, <span class="at">movie.name =</span> gif_file, <span class="at">interval =</span> <span class="fl">0.1</span>, <span class="at">ani.width =</span> <span class="dv">500</span>, <span class="at">ani.height =</span> <span class="dv">400</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="fig-scatmat" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="assign01-submission_Arindom_32779267_files/figure-html/fig-scatmat-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption class="figure-caption">Figure&nbsp;8: 2D scatter plot matrix</figcaption>
+</figure>
 </div>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Key takeaway
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Based on the scatter plot matrix as illustrated by <a href="#fig-scatmat">Figure&nbsp;8</a>, it is <strong>difficult to ascertain any particular pattern</strong> when evaluating each of the pair of variables against one another. While there appears to be a very weak relationship between X1 and X2 owing to a correlation of 0.45, however, it is difficult to obtain any insight as the scatter points are randomly spread out on the 2D space. The remaining pair of variables show even weaker correlation, <strong>thereby indicating that each of the pair of variables are non-linearly related to one another.</strong></p>
+</div>
+</div>
+</section>
+<section id="b-non-linear-dimension-reduction-using-umap" class="level3">
+<h3 class="anchored" data-anchor-id="b-non-linear-dimension-reduction-using-umap">b) Non-linear dimension reduction using UMAP</h3>
+<p>The uniform manifold approximation and projection (UMAP) compares the interpoint distances with what might be expected if the data was uniformly distributed in the high dimensional shapes.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-umap" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="assign01-submission_Arindom_32779267_files/figure-html/fig-umap-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption class="figure-caption">Figure&nbsp;9: UMAP representation of the data</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Based on the UMAP representation of the data on a 2D space upon reducing the dimensions into UMAP1 and UMAP2, we can observe that the data points have segregated into two regions of the plane, thereby creating <strong>two clusters</strong>. On the bottom left of the 2D space, we can clearly recognise the cluster due to most points concentrating close to one another. However, for the remaining set of the data, there is a high variance and these points cover a wide space on the 2D plane. While some of those points appear to be concentrating in the center (possibly due to clumping), however, the remaining points are much more widely spread.</p>
+<p>Hence, we can expect <strong>a fair number of outliers</strong> while visualising the second cluster.</p>
+</div>
+</div>
+</section>
+<section id="c-high-dimensional-data-visualisation-using-the-grand-tour" class="level3">
+<h3 class="anchored" data-anchor-id="c-high-dimensional-data-visualisation-using-the-grand-tour">c) High-dimensional data visualisation using the grand tour</h3>
+<p>While we have already visualised the data on the 2D space by looking at the correlation among the variables, we now attempt to visualise the high-dimensional data in its true form by creating a tour which is an animation of the data points in the multi-dimensional space. The main advantage of this technique is that there is no information lost when drawing insights as we are effectively looking at all the data points in its original dimensions.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-c7gif" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure">
 <p><img src="assign01-submission_Arindom_32779267_files/figure-html/fig-c7gif-1.gif" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">Figure&nbsp;8: High dimesional tour for the C7 dataset</figcaption>
+<figcaption class="figure-caption">Figure&nbsp;10: High-dimesional tour for the C7 dataset</figcaption>
 </figure>
 </div>
 </div>
 </div>
-<div class="cell">
-<div class="cell-output-display">
-<p><img src="assign01-submission_Arindom_32779267_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid" width="672"></p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Key takeaway
 </div>
 </div>
-<div class="cell">
-<div class="cell-output-display">
-<p><img src="assign01-submission_Arindom_32779267_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid" width="672"></p>
+<div class="callout-body-container callout-body">
+<ul>
+<li><p>While analysing the tour as illustrated by <a href="#fig-c7gif">Figure&nbsp;10</a>, we can observe the presence of a particular cluster of points which are concentrated close to one another. This was previously detected in <a href="#fig-umap">Figure&nbsp;9</a> aswell.</p></li>
+<li><p>In addition to the above finding, we can also observe that the points other than those in the identified cluster appear to be entirely on the plane generated by the axes X1 and X2.This information was not possible to obtain from <a href="#fig-umap">Figure&nbsp;9</a> due to its inherent functionality of reducing all the dimensions to two dimensions, thereby reducing the interpretability of the plot.</p></li>
+<li><p>There also appears to be a particular orientation of the dimensions when the scatter points <strong>are linearly arranged</strong>. This was observed <strong>through a combination of the dimensions X3,X5 and X6</strong>.</p></li>
+</ul>
 </div>
 </div>
-</section>
 <section id="dimension-reduction-15pts" class="level4">
 <h4 class="anchored" data-anchor-id="dimension-reduction-15pts">4. Dimension reduction (15pts)</h4>
 <p>YOUR ANSWER HERE</p>

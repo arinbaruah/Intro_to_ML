@@ -1,5 +1,5 @@
 ```{r, include = FALSE}
-source("../setup.R")
+#source("../setup.R")
 ```
 
 ## Overview
@@ -111,7 +111,7 @@ Predictive probabilities are aspects of the model. It is useful to plot. What do
 library(geozoo)
 w_grid <- cube.solid.random(p=2)$points
 colnames(w_grid) <- c("x1", "x2")
-w_grid <- w_grid |> as_tibble() |>
+w_grid <- w_grid |> as_tibble() |>f
   mutate(x1 = x1*(max(w$x1)-min(w$x1)+min(w$x1)),
          x2 = x2*(max(w$x2)-min(w$x2)+min(w$x2)))
 w_lda <- lda(cl~x1+x2, data=w)
