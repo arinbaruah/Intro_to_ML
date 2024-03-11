@@ -42,7 +42,7 @@ draw_confusion_matrix <- function(cm) {
   text(295, 335, res[4], cex=1.6, font=2, col='white')
 
 
-  plot(c(100, 0), c(100, 0), type = "n", xlab="", ylab="", main = "DETAILS", xaxt='n', yaxt='n')
+  plot(c(100, 0), c(100, 0), type = "n", xlab="", ylab="", main = "MODEL PERFORMANCE METRICS", xaxt='n', yaxt='n')
   text(10, 85, names(cm$byClass[1]), cex=1.2, font=2)
   text(10, 70, round(as.numeric(cm$byClass[1]), 3), cex=1.2)
   text(30, 85, names(cm$byClass[2]), cex=1.2, font=2)
@@ -71,6 +71,12 @@ library(ggplot2)
 library(kableExtra)
 library(caret)
 library(plotROC)
+library(mulgar)
+library(tourr)
+library(GGally)
+library(uwot)
+library(animation)
+library(magick)
 ```
 
 
@@ -318,9 +324,47 @@ As we can observe from @fig-roc, the area under the curve (AUC) covered by the R
 The higher the curve is to the top left point of the plot, the higher the true positive rate of the model (measured through sensitivity) as well as the least false positive rate (measured through 1-specificity).
 :::
 
-#### 3. Visualisation (8pts)
+#### 3. Visualisation 
 
-YOUR ANSWER HERE
+```{r eval=FALSE,echo=TRUE}
+gif_file <- "animated_xy.gif"
+ani.options(interval = 0.1, ani.width = 500, ani.height = 400)
+
+saveGIF({
+  animate_xy(c7)
+}, movie.name = gif_file, interval = 0.1, ani.width = 500, ani.height = 400)
+
+```
+
+```{r}
+#| label: fig-c7gif
+#| fig-cap: "High dimesional tour for the C7 dataset"
+image <- image_read("animated_xy.gif")
+image_animate(image)
+```
+
+
+
+
+```{r}
+ggscatmat(c7)
+```
+
+```{r}
+
+
+set.seed(253)
+c7_tidy_umap <- umap(c7, init = "spca")
+
+c7_tidy_umap_df <- c7_tidy_umap |>
+  as_tibble() |>
+  rename(UMAP1 = V1, UMAP2 = V2) 
+ggplot(c7_tidy_umap_df, aes(x = UMAP1, 
+                           y = UMAP2)) +
+  geom_point(colour = "#EC5C00") 
+```
+
+
 
 #### 4. Dimension reduction (15pts)
 

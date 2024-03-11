@@ -313,9 +313,36 @@ Key takeaway
 <p>The higher the curve is to the top left point of the plot, the higher the true positive rate of the model (measured through sensitivity) as well as the least false positive rate (measured through 1-specificity).</p>
 </div>
 </div>
-<section id="visualisation-8pts" class="level4">
-<h4 class="anchored" data-anchor-id="visualisation-8pts">3. Visualisation (8pts)</h4>
-<p>YOUR ANSWER HERE</p>
+<section id="visualisation" class="level4">
+<h4 class="anchored" data-anchor-id="visualisation">3. Visualisation</h4>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>gif_file <span class="ot">&lt;-</span> <span class="st">"animated_xy.gif"</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ani.options</span>(<span class="at">interval =</span> <span class="fl">0.1</span>, <span class="at">ani.width =</span> <span class="dv">500</span>, <span class="at">ani.height =</span> <span class="dv">400</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">saveGIF</span>({</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">animate_xy</span>(c7)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>}, <span class="at">movie.name =</span> gif_file, <span class="at">interval =</span> <span class="fl">0.1</span>, <span class="at">ani.width =</span> <span class="dv">500</span>, <span class="at">ani.height =</span> <span class="dv">400</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-c7gif" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="assign01-submission_Arindom_32779267_files/figure-html/fig-c7gif-1.gif" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Figure&nbsp;8: High dimesional tour for the C7 dataset</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="assign01-submission_Arindom_32779267_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="assign01-submission_Arindom_32779267_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
 </section>
 <section id="dimension-reduction-15pts" class="level4">
 <h4 class="anchored" data-anchor-id="dimension-reduction-15pts">4. Dimension reduction (15pts)</h4>
