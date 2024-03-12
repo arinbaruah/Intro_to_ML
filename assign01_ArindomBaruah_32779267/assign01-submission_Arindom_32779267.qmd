@@ -110,6 +110,9 @@ The matrix calculation for computing $(X-A)^T S^{-1}(X-A)$ yields the result __`
 d_pred <- read_csv("https://raw.githubusercontent.com/numbats/iml/master/data/pred_data.csv")
 d_pred |> slice_head(n=3) %>% kbl()
 ```
+The computations to assess the model metrics are delineated in the panel tabsets below.
+
+:::panel-tabset
 
 #### Model 1 
 
@@ -175,7 +178,14 @@ draw_confusion_matrix(model_2_cm)
 As we can observe from the model metrics in @fig-confmat1 and @fig-confmat2, the model 1 was observed to classify the labelled data more accurately than model 2.
 :::
 
+:::
+
 ### b) Sensitivity and Specificity with revised threshold values
+
+
+:::panel-tabset
+
+### Classification threshold of 0.3
 
 #### 1) When the threshold value for classification in model 1 is 0.3
 
@@ -207,7 +217,37 @@ model_new_1a_cm <- confusionMatrix(model_new_1a$pred1,model_new_1a$y)
 draw_confusion_matrix(model_new_1a_cm)
 
 ```
-#### 2) When the threshold value for classification in model 1 is 0.4
+#### 2) When the threshold value for classification in model 2 is 0.3
+
+```{r}
+model_new_2a <- model_2
+model_new_2a <- model_new_2a %>% mutate(pred2 = if_else(bilby2 >= 0.3,"bilby","quokka")) 
+model_new_2a$y <- as.factor(model_new_2a$y)
+model_new_2a$pred2 <- as.factor(model_new_2a$pred2)
+
+
+
+model_new_2a_cm <- model_new_2a %>% count(y,pred2) %>% group_by(y) %>%
+  mutate(cl_acc = n[pred2==y]/sum(n)) %>% pivot_wider(names_from = pred2,
+                                                      values_from = n) %>%
+  dplyr::select(y,bilby,quokka,cl_acc)
+
+
+```
+
+```{r}
+#| label: fig-confmat_new_2a
+#| fig-cap: "Confusion matrix with key performance metrics of model 2 when considering 0.3 as the threshold value for positive Bilby classification"
+model_new_2a_cm <- confusionMatrix(model_new_2a$pred2,model_new_2a$y)
+
+draw_confusion_matrix(model_new_2a_cm)
+
+```
+The sensitivity for `model 2` when the threshold value for positive Bilby classification is 0.3 and above is __`r sens(model_new_2a,y,pred2) %>% pull(.estimate) %>% round(3)`__. The value for __1-Specificity__ for the same model which is based on the true positive and the true negative rates is  __`r 1-spec(model_new_2a,y,pred2) %>% pull(.estimate) %>% round(3)`__. Other detailed model performance metrics for model 2 with a threshold value of 0.3 can be referred to in @fig-confmat_new_2a.
+
+### Classification threshold of 0.4
+
+#### 1) When the threshold value for classification in model 1 is 0.4
 
 ```{r}
 model_new_1b <- model_1
@@ -234,38 +274,10 @@ draw_confusion_matrix(model_new_1b_cm)
 
 ```
 
-#### 3) When the threshold value for classification in model 2 is 0.3
-
-```{r}
-model_new_2a <- model_2
-model_new_2a <- model_new_2a %>% mutate(pred2 = if_else(bilby2 >= 0.3,"bilby","quokka")) 
-model_new_2a$y <- as.factor(model_new_2a$y)
-model_new_2a$pred2 <- as.factor(model_new_2a$pred2)
 
 
 
-model_new_2a_cm <- model_new_2a %>% count(y,pred2) %>% group_by(y) %>%
-  mutate(cl_acc = n[pred2==y]/sum(n)) %>% pivot_wider(names_from = pred2,
-                                                      values_from = n) %>%
-  dplyr::select(y,bilby,quokka,cl_acc)
-
-
-```
-
-The sensitivity for `model 2` when the threshold value for positive Bilby classification is 0.3 and above is __`r sens(model_new_2a,y,pred2) %>% pull(.estimate) %>% round(3)`__. The value for __1-Specificity__ for the same model which is based on the true positive and the true negative rates is  __`r 1-spec(model_new_2a,y,pred2) %>% pull(.estimate) %>% round(3)`__. Other detailed model performance metrics for model 2 with a threshold value of 0.3 can be referred to in @fig-confmat_new_2a.
-
-
-
-```{r}
-#| label: fig-confmat_new_2a
-#| fig-cap: "Confusion matrix with key performance metrics of model 2 when considering 0.3 as the threshold value for positive Bilby classification"
-model_new_2a_cm <- confusionMatrix(model_new_2a$pred2,model_new_2a$y)
-
-draw_confusion_matrix(model_new_2a_cm)
-
-```
-
-#### 4) When the threshold value for classification in model 2 is 0.4
+#### 2) When the threshold value for classification in model 2 is 0.4
 
 ```{r}
 model_new_2b <- model_2
@@ -296,6 +308,8 @@ draw_confusion_matrix(model_new_2b_cm)
 ```
 
 The sensitivity for `model 2` when the threshold value for positive Bilby classification is 0.4 and above is __`r sens(model_new_2b,y,pred2) %>% pull(.estimate) %>% round(3)`__. The value for __1-Specificity__ for the same model which is based on the true positive and the true negative rates is  __`r 1-spec(model_new_2b,y,pred2) %>% pull(.estimate) %>% round(3)`__. Other detailed model performance metrics for model 2 with a threshold value of 0.3 can be referred to in @fig-confmat_new_2b.
+
+:::
 
 ### c) Receiver Operative Curve (ROC) visualisation for model output
 
