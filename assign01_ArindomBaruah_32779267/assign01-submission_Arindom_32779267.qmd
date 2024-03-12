@@ -77,6 +77,7 @@ library(GGally)
 library(uwot)
 library(animation)
 library(magick)
+library(ggfortify)
 ```
 
 
@@ -87,12 +88,12 @@ library(magick)
 
 ```{r echo=TRUE}
 
-S <- rbind(c(3,1),c(1,2))
-X <- rbind(4,2)
-A <- rbind(1,-1)
+S <- rbind(c(3,1),c(1,2)) # 2 X 2 Matrix creation
+X <- rbind(4,2) # 2 X 1 Matrix creation
+A <- rbind(1,-1) # 2 X 1 Matric creation
 
 
-Matrix_calculation <- t(X-A) %*% solve(S) %*% (X-A)
+Matrix_calculation <- t(X-A) %*% solve(S) %*% (X-A) #Matrix multiplication
 
 ```
 The matrix calculation for computing $(X-A)^T S^{-1}(X-A)$ yields the result __`r Matrix_calculation[1,1]`__.
@@ -370,7 +371,7 @@ c7_tidy_umap_df <- c7_tidy_umap |>
   rename(UMAP1 = V1, UMAP2 = V2) 
 ggplot(c7_tidy_umap_df, aes(x = UMAP1, 
                            y = UMAP2)) +
-  geom_point(colour = "#EC5C00") 
+  geom_point(colour = "#EC5C00") + theme_minimal()
 ```
 
 :::{.callout-note}
@@ -412,19 +413,79 @@ image_animate(image)
 
 - There also appears to be a particular orientation of the dimensions when the scatter points __are linearly arranged__. This was observed __through a combination of the dimensions X3,X5 and X6__.
 
-
 :::
 
 
 
+## 4. Dimension reduction 
+
+In this exercise, we are required to analyse a dataset which contains multiple number of variables as illustrated by @tbl-cricket. 
+
+```{r}
+#| label: tbl-cricket
+#| tbl-cap: "A sample of the high-dimensional data containing statistics of Women's Cricket"
+
+df_cricket <- read_csv("auswt20.csv")
+
+df_cricket %>% head() %>% kbl() 
+```
+
+In order to obtain insights from the data, we need to study the various variables in the current dataset. However, with the high number of variables present, it makes it extremely complicated to individually study each pair of variables.
+
+In this exercise, we will apply a dimensionality reduction technique called the Principal Componenent Analysis (PCA). This technique is based on creating a linear combination of the variables such that the variance in the data is maximised, and are mutually uncorrelated. 
+
+### Implementation of PCA in the current dataset
+
+The chunk below provides the code required to compute the PCA for the current data.
+
+```{r}
+#| echo: TRUE
+cricket_pca <- prcomp(df_cricket[,2:dim(df_cricket)[2]],scale=TRUE)
+```
+
+#### a) Summary of the PCA
+```{r}
+#| label: tbl-summary
+#| tbl-cap: "Summary of the PCA computation for Women's cricket data"
+
+cricket_pca_smry <- tibble(evl=cricket_pca$sdev^2) %>%
+  mutate(p = evl/sum(evl), cum_p = cumsum(evl/sum(evl))) %>% t() 
+colnames(cricket_pca_smry) <- colnames(cricket_pca$rotation)
+rownames(cricket_pca_smry) <- c("Variance", "Proportion", "Cum. prop")
+kable(cricket_pca_smry, digits=2, align="r") %>% 
+  kable_styling(full_width = T) %>%
+  row_spec(0, color="white", background = "#7570b3") %>%
+  column_spec(1, width = "2.5em", color="white", background = "#7570b3") %>%
+  column_spec(1:8, width = "2.5em") %>%
+  row_spec(3, color="white", background = "#CA6627")
+```
+
+@tbl-summary provides a succinct summary of the variance of each principal component and the proportion of variance explained by that particular principal componenet (PC).
+
+:::{.callout-note}
+# Key takeaway
+@tbl-summary would allow us to obtain the ideal number of PCs which would capture the most amount of variance in the data, at the same time, being able to discard some of the PCs which do not contribute much to explain the variance. In this manner, we not only obtain the important PCs, but also reduce the overall complexity of the model by reducing the overall dimension of the data.
+:::
+#### b) Biplot generation for PC1 and PC2
+
+```{r}
+#| label: fig-biplot
+#| fig-cap: "Biplot illustration of PC1 and PC2"
+autoplot(cricket_pca, loadings = TRUE, 
+         loadings.label = TRUE) + theme_minimal()
+```
+@fig-biplot illustrates the biplot distribution for the first two PCs of the data.
+
+#### c) Choosing the appropriate number of PCs
+
+```{r}
+cricket_pca_var <- tibble(n=1:length(cricket_pca$sdev), evl=cricket_pca$sdev^2)
+ggplot(cricket_pca_var, aes(x=n, y=evl)) + geom_line() + geom_point() +
+  xlab("Number of PCs") + ylab("Eigenvalue") +
+  theme_minimal(base_size = 18)
+```
 
 
-
-
-
-#### 4. Dimension reduction (15pts)
-
-YOUR ANSWER HERE
 
 ## References
 

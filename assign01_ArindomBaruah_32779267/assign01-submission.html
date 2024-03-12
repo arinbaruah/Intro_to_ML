@@ -119,12 +119,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="basic-math-and-computing" class="level2">
 <h2 class="anchored" data-anchor-id="basic-math-and-computing">1. Basic math and computing</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>S <span class="ot">&lt;-</span> <span class="fu">rbind</span>(<span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">1</span>),<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>X <span class="ot">&lt;-</span> <span class="fu">rbind</span>(<span class="dv">4</span>,<span class="dv">2</span>)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>A <span class="ot">&lt;-</span> <span class="fu">rbind</span>(<span class="dv">1</span>,<span class="sc">-</span><span class="dv">1</span>)</span>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>S <span class="ot">&lt;-</span> <span class="fu">rbind</span>(<span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">1</span>),<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>)) <span class="co"># 2 X 2 Matrix creation</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>X <span class="ot">&lt;-</span> <span class="fu">rbind</span>(<span class="dv">4</span>,<span class="dv">2</span>) <span class="co"># 2 X 1 Matrix creation</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>A <span class="ot">&lt;-</span> <span class="fu">rbind</span>(<span class="dv">1</span>,<span class="sc">-</span><span class="dv">1</span>) <span class="co"># 2 X 1 Matric creation</span></span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>Matrix_calculation <span class="ot">&lt;-</span> <span class="fu">t</span>(X<span class="sc">-</span>A) <span class="sc">%*%</span> <span class="fu">solve</span>(S) <span class="sc">%*%</span> (X<span class="sc">-</span>A)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>Matrix_calculation <span class="ot">&lt;-</span> <span class="fu">t</span>(X<span class="sc">-</span>A) <span class="sc">%*%</span> <span class="fu">solve</span>(S) <span class="sc">%*%</span> (X<span class="sc">-</span>A) <span class="co">#Matrix multiplication</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The matrix calculation for computing <span class="math inline">\((X-A)^T S^{-1}(X-A)\)</span> yields the result <strong>5.4</strong>.</p>
 </section>
@@ -415,9 +415,351 @@ Key takeaway
 </ul>
 </div>
 </div>
-<section id="dimension-reduction-15pts" class="level4">
-<h4 class="anchored" data-anchor-id="dimension-reduction-15pts">4. Dimension reduction (15pts)</h4>
-<p>YOUR ANSWER HERE</p>
+</section>
+</section>
+<section id="dimension-reduction" class="level2">
+<h2 class="anchored" data-anchor-id="dimension-reduction">4. Dimension reduction</h2>
+<p>In this exercise, we are required to analyse a dataset which contains multiple number of variables as illustrated by <a href="#tbl-cricket">Table&nbsp;2</a>.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="tbl-cricket" class="anchored">
+<table data-quarto-postprocess="true" class="table table-sm table-striped small">
+<caption>Table&nbsp;2: A sample of the high-dimensional data containing statistics of Women’s Cricket</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">Player</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Start</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">End</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Matches</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Innings</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">NotOuts</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Runs</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">HighScore</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Average</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">BallsFaced</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">StrikeRate</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Hundreds</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Fifties</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Ducks</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Fours</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Sixes</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Overs</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Maidens</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Wickets</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Economy</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">FourWickets</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">FiveWickets</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">MM Lanning</td>
+<td style="text-align: right;">2010</td>
+<td style="text-align: right;">2023</td>
+<td style="text-align: right;">132</td>
+<td style="text-align: right;">121</td>
+<td style="text-align: right;">28</td>
+<td style="text-align: right;">3405</td>
+<td style="text-align: right;">133</td>
+<td style="text-align: right;">36.61290</td>
+<td style="text-align: right;">2926</td>
+<td style="text-align: right;">116.37047</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">15</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">405</td>
+<td style="text-align: right;">47</td>
+<td style="text-align: right;">6.0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">6.500000</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">AJ Healy</td>
+<td style="text-align: right;">2010</td>
+<td style="text-align: right;">2024</td>
+<td style="text-align: right;">153</td>
+<td style="text-align: right;">135</td>
+<td style="text-align: right;">21</td>
+<td style="text-align: right;">2795</td>
+<td style="text-align: right;">148</td>
+<td style="text-align: right;">24.51754</td>
+<td style="text-align: right;">2164</td>
+<td style="text-align: right;">129.15896</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">372</td>
+<td style="text-align: right;">54</td>
+<td style="text-align: right;">0.0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.000000</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">BL Mooney</td>
+<td style="text-align: right;">2016</td>
+<td style="text-align: right;">2024</td>
+<td style="text-align: right;">95</td>
+<td style="text-align: right;">89</td>
+<td style="text-align: right;">22</td>
+<td style="text-align: right;">2764</td>
+<td style="text-align: right;">117</td>
+<td style="text-align: right;">41.25373</td>
+<td style="text-align: right;">2238</td>
+<td style="text-align: right;">123.50313</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">22</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">362</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">0.0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.000000</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">EA Perry</td>
+<td style="text-align: right;">2008</td>
+<td style="text-align: right;">2024</td>
+<td style="text-align: right;">151</td>
+<td style="text-align: right;">95</td>
+<td style="text-align: right;">37</td>
+<td style="text-align: right;">1841</td>
+<td style="text-align: right;">75</td>
+<td style="text-align: right;">31.74138</td>
+<td style="text-align: right;">1585</td>
+<td style="text-align: right;">116.15142</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">163</td>
+<td style="text-align: right;">45</td>
+<td style="text-align: right;">401.5</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">125</td>
+<td style="text-align: right;">5.845707</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">EJ Villani</td>
+<td style="text-align: right;">2009</td>
+<td style="text-align: right;">2018</td>
+<td style="text-align: right;">62</td>
+<td style="text-align: right;">58</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">1369</td>
+<td style="text-align: right;">90</td>
+<td style="text-align: right;">28.52083</td>
+<td style="text-align: right;">1158</td>
+<td style="text-align: right;">118.22107</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">177</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">0.0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.000000</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">AJ Blackwell</td>
+<td style="text-align: right;">2005</td>
+<td style="text-align: right;">2017</td>
+<td style="text-align: right;">95</td>
+<td style="text-align: right;">81</td>
+<td style="text-align: right;">19</td>
+<td style="text-align: right;">1314</td>
+<td style="text-align: right;">61</td>
+<td style="text-align: right;">21.19355</td>
+<td style="text-align: right;">1414</td>
+<td style="text-align: right;">92.92786</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">87</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1.0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">14.000000</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+
+</div>
+</div>
+<p>In order to obtain insights from the data, we need to study the various variables in the current dataset. However, with the high number of variables present, it makes it extremely complicated to individually study each pair of variables.</p>
+<p>In this exercise, we will apply a dimensionality reduction technique called the Principal Componenent Analysis (PCA). This technique is based on creating a linear combination of the variables such that the variance in the data is maximised, and are mutually uncorrelated.</p>
+<section id="implementation-of-pca-in-the-current-dataset" class="level3">
+<h3 class="anchored" data-anchor-id="implementation-of-pca-in-the-current-dataset">Implementation of PCA in the current dataset</h3>
+<p>The chunk below provides the code required to compute the PCA for the current data.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>cricket_pca <span class="ot">&lt;-</span> <span class="fu">prcomp</span>(df_cricket[,<span class="dv">2</span><span class="sc">:</span><span class="fu">dim</span>(df_cricket)[<span class="dv">2</span>]],<span class="at">scale=</span><span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="a-summary-of-the-pca" class="level4">
+<h4 class="anchored" data-anchor-id="a-summary-of-the-pca">a) Summary of the PCA</h4>
+<div class="cell">
+<div class="cell-output-display">
+<div id="tbl-summary" class="anchored">
+<table class="table table-sm table-striped small" data-quarto-postprocess="true">
+<caption>Table&nbsp;3: Summary of the PCA computation for Women’s cricket data</caption>
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th" style="text-align: left; color: white !important; background-color: rgba(117, 112, 179, 255) !important;"></th>
+<th data-quarto-table-cell-role="th" style="text-align: right; color: white !important; background-color: rgba(117, 112, 179, 255) !important;">PC1</th>
+<th data-quarto-table-cell-role="th" style="text-align: right; color: white !important; background-color: rgba(117, 112, 179, 255) !important;">PC2</th>
+<th data-quarto-table-cell-role="th" style="text-align: right; color: white !important; background-color: rgba(117, 112, 179, 255) !important;">PC3</th>
+<th data-quarto-table-cell-role="th" style="text-align: right; color: white !important; background-color: rgba(117, 112, 179, 255) !important;">PC4</th>
+<th data-quarto-table-cell-role="th" style="text-align: right; color: white !important; background-color: rgba(117, 112, 179, 255) !important;">PC5</th>
+<th data-quarto-table-cell-role="th" style="text-align: right; color: white !important; background-color: rgba(117, 112, 179, 255) !important;">PC6</th>
+<th data-quarto-table-cell-role="th" style="text-align: right; color: white !important; background-color: rgba(117, 112, 179, 255) !important;">PC7</th>
+<th data-quarto-table-cell-role="th" style="text-align: right; color: white !important; background-color: rgba(117, 112, 179, 255) !important;">PC8</th>
+<th data-quarto-table-cell-role="th" style="text-align: right; color: white !important; background-color: rgba(117, 112, 179, 255) !important;">PC9</th>
+<th data-quarto-table-cell-role="th" style="text-align: right; color: white !important; background-color: rgba(117, 112, 179, 255) !important;">PC10</th>
+<th data-quarto-table-cell-role="th" style="text-align: right; color: white !important; background-color: rgba(117, 112, 179, 255) !important;">PC11</th>
+<th data-quarto-table-cell-role="th" style="text-align: right; color: white !important; background-color: rgba(117, 112, 179, 255) !important;">PC12</th>
+<th data-quarto-table-cell-role="th" style="text-align: right; color: white !important; background-color: rgba(117, 112, 179, 255) !important;">PC13</th>
+<th data-quarto-table-cell-role="th" style="text-align: right; color: white !important; background-color: rgba(117, 112, 179, 255) !important;">PC14</th>
+<th data-quarto-table-cell-role="th" style="text-align: right; color: white !important; background-color: rgba(117, 112, 179, 255) !important;">PC15</th>
+<th data-quarto-table-cell-role="th" style="text-align: right; color: white !important; background-color: rgba(117, 112, 179, 255) !important;">PC16</th>
+<th data-quarto-table-cell-role="th" style="text-align: right; color: white !important; background-color: rgba(117, 112, 179, 255) !important;">PC17</th>
+<th data-quarto-table-cell-role="th" style="text-align: right; color: white !important; background-color: rgba(117, 112, 179, 255) !important;">PC18</th>
+<th data-quarto-table-cell-role="th" style="text-align: right; color: white !important; background-color: rgba(117, 112, 179, 255) !important;">PC19</th>
+<th data-quarto-table-cell-role="th" style="text-align: right; color: white !important; background-color: rgba(117, 112, 179, 255) !important;">PC20</th>
+<th data-quarto-table-cell-role="th" style="text-align: right; color: white !important; background-color: rgba(117, 112, 179, 255) !important;">PC21</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left; width: 2.5em; color: white !important; background-color: rgba(117, 112, 179, 255) !important; width: 2.5em;">Variance</td>
+<td style="text-align: right; width: 2.5em;">9.38</td>
+<td style="text-align: right; width: 2.5em;">4.44</td>
+<td style="text-align: right; width: 2.5em;">1.96</td>
+<td style="text-align: right; width: 2.5em;">1.14</td>
+<td style="text-align: right; width: 2.5em;">0.97</td>
+<td style="text-align: right; width: 2.5em;">0.83</td>
+<td style="text-align: right; width: 2.5em;">0.65</td>
+<td style="text-align: right;">0.48</td>
+<td style="text-align: right;">0.29</td>
+<td style="text-align: right;">0.23</td>
+<td style="text-align: right;">0.17</td>
+<td style="text-align: right;">0.13</td>
+<td style="text-align: right;">0.11</td>
+<td style="text-align: right;">0.09</td>
+<td style="text-align: right;">0.06</td>
+<td style="text-align: right;">0.04</td>
+<td style="text-align: right;">0.02</td>
+<td style="text-align: right;">0.01</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; width: 2.5em; color: white !important; background-color: rgba(117, 112, 179, 255) !important; width: 2.5em;">Proportion</td>
+<td style="text-align: right; width: 2.5em;">0.45</td>
+<td style="text-align: right; width: 2.5em;">0.21</td>
+<td style="text-align: right; width: 2.5em;">0.09</td>
+<td style="text-align: right; width: 2.5em;">0.05</td>
+<td style="text-align: right; width: 2.5em;">0.05</td>
+<td style="text-align: right; width: 2.5em;">0.04</td>
+<td style="text-align: right; width: 2.5em;">0.03</td>
+<td style="text-align: right;">0.02</td>
+<td style="text-align: right;">0.01</td>
+<td style="text-align: right;">0.01</td>
+<td style="text-align: right;">0.01</td>
+<td style="text-align: right;">0.01</td>
+<td style="text-align: right;">0.01</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; width: 2.5em; color: white !important; background-color: rgba(117, 112, 179, 255) !important; width: 2.5em; color: white !important; background-color: rgba(202, 102, 39, 255) !important;">Cum. prop</td>
+<td style="text-align: right; width: 2.5em; color: white !important; background-color: rgba(202, 102, 39, 255) !important;">0.45</td>
+<td style="text-align: right; width: 2.5em; color: white !important; background-color: rgba(202, 102, 39, 255) !important;">0.66</td>
+<td style="text-align: right; width: 2.5em; color: white !important; background-color: rgba(202, 102, 39, 255) !important;">0.75</td>
+<td style="text-align: right; width: 2.5em; color: white !important; background-color: rgba(202, 102, 39, 255) !important;">0.81</td>
+<td style="text-align: right; width: 2.5em; color: white !important; background-color: rgba(202, 102, 39, 255) !important;">0.85</td>
+<td style="text-align: right; width: 2.5em; color: white !important; background-color: rgba(202, 102, 39, 255) !important;">0.89</td>
+<td style="text-align: right; width: 2.5em; color: white !important; background-color: rgba(202, 102, 39, 255) !important;">0.92</td>
+<td style="text-align: right; color: white !important; background-color: rgba(202, 102, 39, 255) !important;">0.95</td>
+<td style="text-align: right; color: white !important; background-color: rgba(202, 102, 39, 255) !important;">0.96</td>
+<td style="text-align: right; color: white !important; background-color: rgba(202, 102, 39, 255) !important;">0.97</td>
+<td style="text-align: right; color: white !important; background-color: rgba(202, 102, 39, 255) !important;">0.98</td>
+<td style="text-align: right; color: white !important; background-color: rgba(202, 102, 39, 255) !important;">0.98</td>
+<td style="text-align: right; color: white !important; background-color: rgba(202, 102, 39, 255) !important;">0.99</td>
+<td style="text-align: right; color: white !important; background-color: rgba(202, 102, 39, 255) !important;">0.99</td>
+<td style="text-align: right; color: white !important; background-color: rgba(202, 102, 39, 255) !important;">1.00</td>
+<td style="text-align: right; color: white !important; background-color: rgba(202, 102, 39, 255) !important;">1.00</td>
+<td style="text-align: right; color: white !important; background-color: rgba(202, 102, 39, 255) !important;">1.00</td>
+<td style="text-align: right; color: white !important; background-color: rgba(202, 102, 39, 255) !important;">1.00</td>
+<td style="text-align: right; color: white !important; background-color: rgba(202, 102, 39, 255) !important;">1</td>
+<td style="text-align: right; color: white !important; background-color: rgba(202, 102, 39, 255) !important;">1</td>
+<td style="text-align: right; color: white !important; background-color: rgba(202, 102, 39, 255) !important;">1</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+
+</div>
+</div>
+<p><a href="#tbl-summary">Table&nbsp;3</a> provides a succinct summary of the variance of each principal component and the proportion of variance explained by that particular principal componenet (PC).</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Key takeaway
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><a href="#tbl-summary">Table&nbsp;3</a> would allow us to obtain the ideal number of PCs which would capture the most amount of variance in the data, at the same time, being able to discard some of the PCs which do not contribute much to explain the variance. In this manner, we not only obtain the important PCs, but also reduce the overall complexity of the model by reducing the overall dimension of the data.</p>
+</div>
+</div>
+</section>
+<section id="b-biplot-generation-for-pc1-and-pc2" class="level4">
+<h4 class="anchored" data-anchor-id="b-biplot-generation-for-pc1-and-pc2">b) Biplot generation for PC1 and PC2</h4>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-biplot" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="assign01-submission_Arindom_32779267_files/figure-html/fig-biplot-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption class="figure-caption">Figure&nbsp;11: Biplot illustration of PC1 and PC2</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p><a href="#fig-biplot">Figure&nbsp;11</a> illustrates the biplot distribution for the first two PCs of the data.</p>
+</section>
+<section id="c-choosing-the-appropriate-number-of-pcs" class="level4">
+<h4 class="anchored" data-anchor-id="c-choosing-the-appropriate-number-of-pcs">c) Choosing the appropriate number of PCs</h4>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="assign01-submission_Arindom_32779267_files/figure-html/unnamed-chunk-27-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
 </section>
 </section>
 </section>
