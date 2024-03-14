@@ -78,6 +78,8 @@ library(uwot)
 library(animation)
 library(magick)
 library(ggfortify)
+library(mulgar)
+library(plotly)
 ```
 
 
@@ -460,7 +462,7 @@ kable(cricket_pca_smry, digits=2, align="r") %>%
   row_spec(3, color="white", background = "#CA6627")
 ```
 
-@tbl-summary provides a succinct summary of the variance of each principal component and the proportion of variance explained by that particular principal componenet (PC).
+@tbl-summary provides a succinct summary of the variance of each principal component and the proportion of variance explained by that particular principal component (PC).
 
 :::{.callout-note}
 # Key takeaway
@@ -471,20 +473,47 @@ kable(cricket_pca_smry, digits=2, align="r") %>%
 ```{r}
 #| label: fig-biplot
 #| fig-cap: "Biplot illustration of PC1 and PC2"
-autoplot(cricket_pca, loadings = TRUE, 
-         loadings.label = TRUE) + theme_minimal()
+ggplotly(autoplot(cricket_pca, loadings = TRUE, 
+         loadings.label = TRUE) + theme_minimal() )
 ```
-@fig-biplot illustrates the biplot distribution for the first two PCs of the data.
+@fig-biplot illustrates the biplot distribution for the first two PCs of the data. 
+
+:::{.callout-note}
+# Key takeaway
+
+Based on @fig-biplot, some of the key observations are as follows:
+
+
+- We can observe that there are variables such as __"wickets","four wickets" and "five wickets"__ which are pointing in the vertically downward direction and are also nearly parallel to one another. __This indicates that these set of variables influence the PC2 variable strongly and are highly correlated to one another__.
+
+- On the other hand, variables such as __"Innings","Not outs", "Strike rate","Sixes","Ducks","High score","Balls faced"__ points towards nearly 90 degrees to the set of variables in the above bullet point. This means that aforementioned set of variables contribute __towards the PC1 variable and are also correlated as they are observed to be pointing generally in a similar direction.__
+
+- Based on the understanding of the cricketing terminologies, it can be inferred that PC2 is heavily influenced by the parameters that __relate to bowling in the game__.
+
+- On the other hand, PC1 is primarily influenced by parameters which __relate to batting in the game__.
+
+- There are variables such as __"Start","Economy" and "Average"__ whose lengths are __considerably smaller__ than the other parameters. This indicates that the effect of these variables are much __lower than some of the other variables mentioned in the plot.__
+
+- There also appears to be __lower correlation among each variable in the direction of PC1__ as the loading directions of the variables (shown by the <span style=color:red>red arrows</span>) are __much more spread out than the case for variables in the PC2 direction.__ This additionally reinforces the fact that PC1 accounts for majority of the variance in the data (nearly 45 %).
+
+:::
+
 
 #### c) Choosing the appropriate number of PCs
 
-```{r}
-cricket_pca_var <- tibble(n=1:length(cricket_pca$sdev), evl=cricket_pca$sdev^2)
-ggplot(cricket_pca_var, aes(x=n, y=evl)) + geom_line() + geom_point() +
-  xlab("Number of PCs") + ylab("Eigenvalue") +
-  theme_minimal(base_size = 18)
-```
 
+```{r}
+#| label: fig-scree
+#| fig-cap: "Scree plot for plotting the variance explained by each PC"
+ggscree(cricket_pca, q=21) + labs(x = "Number of PCs",y = "Variance explained",title = "Scree plot for the number of PC determination") + geom_vline(xintercept = 4,linetype = 3) + theme_classic() + theme(plot.title = element_text(hjust = 0.5))
+```
+The scree plot as illustrated by @fig-scree indicates the variance explained with the addition of each PC. Based on this plot and @tbl-summary, we can clearly observe that the first __4 PCs are able to explain nearly 81% of variance in the data.__ An addition of the another PC is observed explain further variance, but to a lower degree.This indicates that adding more PCs isn't necessarily explaining much variance in the data but making the model complex.
+
+Hence, for the current data in hand, __we will reduce the overall dimensions of the data to 4 by utilising the first 4 PCs__.
+
+
+
+#### d) Interpretation of the PCs
 
 
 ## References
