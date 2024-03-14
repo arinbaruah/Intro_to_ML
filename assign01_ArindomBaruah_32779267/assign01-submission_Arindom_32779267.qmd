@@ -11,6 +11,7 @@ execute:
   echo: false
   message: false
   warning: false
+number-sections: true
 ---
 
 ```{r}
@@ -83,9 +84,7 @@ library(plotly)
 ```
 
 
-# Exercises
-
-## 1. Basic math and computing 
+# Basic math and computing 
 
 
 ```{r echo=TRUE}
@@ -101,9 +100,9 @@ Matrix_calculation <- t(X-A) %*% solve(S) %*% (X-A) #Matrix multiplication
 The matrix calculation for computing $(X-A)^T S^{-1}(X-A)$ yields the result __`r Matrix_calculation[1,1]`__.
 
 
-## 2. ML concepts
+# ML concepts
 
-### a) Model accuracy
+## a) Model accuracy
 
 
 
@@ -117,7 +116,7 @@ The computations to assess the model metrics are delineated in the panel tabsets
 
 :::panel-tabset
 
-#### Model 1 
+### Model 1 
 
 ```{r}
 model_1 <- d_pred %>% dplyr::select(c("y","pred1","bilby1","quokka1"))
@@ -152,7 +151,7 @@ model_1_cm <- confusionMatrix(model_1$pred1,model_1$y)
 draw_confusion_matrix(model_1_cm)
 ```
 
-#### Model 2 
+### Model 2 
 
 
 
@@ -183,14 +182,14 @@ As we can observe from the model metrics in @fig-confmat1 and @fig-confmat2, the
 
 :::
 
-### b) Sensitivity and Specificity with revised threshold values
+## b) Sensitivity and Specificity with revised threshold values
 
 
 :::panel-tabset
 
 ### Classification threshold of 0.3
 
-#### 1) When the threshold value for classification in model 1 is 0.3
+__1) When the threshold value for classification in model 1 is 0.3__
 
 ```{r}
 model_new_1a <- model_1
@@ -220,7 +219,7 @@ model_new_1a_cm <- confusionMatrix(model_new_1a$pred1,model_new_1a$y)
 draw_confusion_matrix(model_new_1a_cm)
 
 ```
-#### 2) When the threshold value for classification in model 2 is 0.3
+__2) When the threshold value for classification in model 2 is 0.3__
 
 ```{r}
 model_new_2a <- model_2
@@ -250,7 +249,7 @@ The sensitivity for `model 2` when the threshold value for positive Bilby classi
 
 ### Classification threshold of 0.4
 
-#### 1) When the threshold value for classification in model 1 is 0.4
+__1) When the threshold value for classification in model 1 is 0.4__
 
 ```{r}
 model_new_1b <- model_1
@@ -280,7 +279,7 @@ draw_confusion_matrix(model_new_1b_cm)
 
 
 
-#### 2) When the threshold value for classification in model 2 is 0.4
+__2) When the threshold value for classification in model 2 is 0.4__
 
 ```{r}
 model_new_2b <- model_2
@@ -314,7 +313,7 @@ The sensitivity for `model 2` when the threshold value for positive Bilby classi
 
 :::
 
-### c) Receiver Operative Curve (ROC) visualisation for model output
+## c) Receiver Operative Curve (ROC) visualisation for model output
 
 ```{r }
 #| label: fig-roc
@@ -341,11 +340,11 @@ As we can observe from @fig-roc, the area under the curve (AUC) covered by the R
 The higher the curve is to the top left point of the plot, the higher the true positive rate of the model (measured through sensitivity) as well as the least false positive rate (measured through 1-specificity).
 :::
 
-## 3. Visualisation 
+# 3. Visualisation 
 
 Here, we are required to visualise a high-dimensional data which contains 6 different variables. Due to the complexity of the data in hand and the multiple dimensions we are looking to study, it is often not possible to understand the correlation of each dimension through simple 2-dimensional plots such as scatter plots. Hence, we will be primarily studying the data through various high dimensional visualisation techniques, namely scatter plot matrix, UMAP and the grand tour.
 
-### a) 2D Scatter plot matrix
+## a) 2D Scatter plot matrix
 
 ```{r}
 #| label: fig-scatmat
@@ -358,7 +357,7 @@ ggscatmat(c7)
 Based on the scatter plot matrix as illustrated by @fig-scatmat, it is __difficult to ascertain any particular pattern__ when evaluating each of the pair of variables against one another. While there appears to be a very weak relationship between X1 and X2 owing to a correlation of 0.45, however, it is difficult to obtain any insight as the scatter points are randomly spread out on the 2D space. The remaining pair of variables show even weaker correlation, __thereby indicating that each of the pair of variables are non-linearly related to one another.__
 :::
 
-### b) Non-linear dimension reduction using UMAP
+## b) Non-linear dimension reduction using UMAP
 
 The uniform manifold approximation and projection (UMAP) compares the interpoint distances with what might be expected if the data was uniformly distributed in the high dimensional shapes.
 ```{r}
@@ -377,13 +376,14 @@ ggplot(c7_tidy_umap_df, aes(x = UMAP1,
 ```
 
 :::{.callout-note}
+# Key takeaway
 
 Based on the UMAP representation of the data on a 2D space upon reducing the dimensions into UMAP1 and UMAP2, we can observe that the data points have segregated into two regions of the plane, thereby creating __two clusters__. On the bottom left of the 2D space, we can clearly recognise the cluster due to most points concentrating close to one another. However, for the remaining set of the data, there is a high variance and these points cover a wide space on the 2D plane. While some of those points appear to be concentrating in the center (possibly due to clumping), however, the remaining points are much more widely spread.
 
 Hence, we can expect __a fair number of outliers__ while visualising the second cluster.
 :::
 
-### c) High-dimensional data visualisation using the grand tour
+## c) High-dimensional data visualisation using the grand tour
 
 While we have already visualised the data on the 2D space by looking at the correlation among the variables, we now attempt to visualise the high-dimensional data in its true form by creating a tour which is an animation of the data points in the multi-dimensional space. The main advantage of this technique is that there is no information lost when drawing insights as we are effectively looking at all the data points in its original dimensions.
 
@@ -419,7 +419,7 @@ image_animate(image)
 
 
 
-## 4. Dimension reduction 
+# Dimension reduction 
 
 In this exercise, we are required to analyse a dataset which contains multiple number of variables as illustrated by @tbl-cricket. 
 
@@ -436,7 +436,7 @@ In order to obtain insights from the data, we need to study the various variable
 
 In this exercise, we will apply a dimensionality reduction technique called the Principal Componenent Analysis (PCA). This technique is based on creating a linear combination of the variables such that the variance in the data is maximised, and are mutually uncorrelated. 
 
-### Implementation of PCA in the current dataset
+## Implementation of PCA in the current dataset
 
 The chunk below provides the code required to compute the PCA for the current data.
 
@@ -445,7 +445,7 @@ The chunk below provides the code required to compute the PCA for the current da
 cricket_pca <- prcomp(df_cricket[,2:dim(df_cricket)[2]],scale=TRUE)
 ```
 
-#### a) Summary of the PCA
+### a) Summary of the PCA
 ```{r}
 #| label: tbl-summary
 #| tbl-cap: "Summary of the PCA computation for Women's cricket data"
@@ -468,13 +468,13 @@ kable(cricket_pca_smry, digits=2, align="r") %>%
 # Key takeaway
 @tbl-summary would allow us to obtain the ideal number of PCs which would capture the most amount of variance in the data, at the same time, being able to discard some of the PCs which do not contribute much to explain the variance. In this manner, we not only obtain the important PCs, but also reduce the overall complexity of the model by reducing the overall dimension of the data.
 :::
-#### b) Biplot generation for PC1 and PC2
+### b) Biplot generation for PC1 and PC2
 
 ```{r}
 #| label: fig-biplot
 #| fig-cap: "Biplot illustration of PC1 and PC2"
 ggplotly(autoplot(cricket_pca, loadings = TRUE, 
-         loadings.label = TRUE) + theme_minimal() )
+         loadings.label = TRUE) + theme_minimal())
 ```
 @fig-biplot illustrates the biplot distribution for the first two PCs of the data. 
 
@@ -488,34 +488,78 @@ Based on @fig-biplot, some of the key observations are as follows:
 
 - On the other hand, variables such as __"Innings","Not outs", "Strike rate","Sixes","Ducks","High score","Balls faced"__ points towards nearly 90 degrees to the set of variables in the above bullet point. This means that aforementioned set of variables contribute __towards the PC1 variable and are also correlated as they are observed to be pointing generally in a similar direction.__
 
-- Based on the understanding of the cricketing terminologies, it can be inferred that PC2 is heavily influenced by the parameters that __relate to bowling in the game__.
-
-- On the other hand, PC1 is primarily influenced by parameters which __relate to batting in the game__.
-
-- There are variables such as __"Start","Economy" and "Average"__ whose lengths are __considerably smaller__ than the other parameters. This indicates that the effect of these variables are much __lower than some of the other variables mentioned in the plot.__
-
-- There also appears to be __lower correlation among each variable in the direction of PC1__ as the loading directions of the variables (shown by the <span style=color:red>red arrows</span>) are __much more spread out than the case for variables in the PC2 direction.__ This additionally reinforces the fact that PC1 accounts for majority of the variance in the data (nearly 45 %).
-
 :::
 
 
-#### c) Choosing the appropriate number of PCs
+### c) Choosing the appropriate number of PCs
 
 
 ```{r}
 #| label: fig-scree
 #| fig-cap: "Scree plot for plotting the variance explained by each PC"
-ggscree(cricket_pca, q=21) + labs(x = "Number of PCs",y = "Variance explained",title = "Scree plot for the number of PC determination") + geom_vline(xintercept = 4,linetype = 3) + theme_classic() + theme(plot.title = element_text(hjust = 0.5))
+
+x_scale <- 1:21
+ggscree(cricket_pca, q=21) + labs(x = "Number of PCs",y = "Variance explained",title = "Scree plot for the number of PC determination") + geom_vline(xintercept = 4,linetype = 3,color = "red",size = 1.5) + theme_classic() + theme(plot.title = element_text(hjust = 0.5)) +
+  scale_x_continuous(breaks = x_scale)
+
+
 ```
 The scree plot as illustrated by @fig-scree indicates the variance explained with the addition of each PC. Based on this plot and @tbl-summary, we can clearly observe that the first __4 PCs are able to explain nearly 81% of variance in the data.__ An addition of the another PC is observed explain further variance, but to a lower degree.This indicates that adding more PCs isn't necessarily explaining much variance in the data but making the model complex.
 
-Hence, for the current data in hand, __we will reduce the overall dimensions of the data to 4 by utilising the first 4 PCs__.
+:::{.callout-note}
+# Key takeaway
+For the current data in hand, __we will reduce the overall dimensions of the data to 4 by utilising the first 4 PCs__.
+
+:::
+
+### d) Interpretation of the PCs {#sec-interpretation}
+
+The biplot which has been illustrated through @fig-biplot allows us to understand the magnitude of contribution through the length of the loading vectors and the correlation among the variables by observing the angle made by each of the loading vectors to one another. Upon closely examining these loading vectors, we can obtain a few key interpretations of the PCs listed below.
+
+:::{.callout-note}
+# Key takeaway
+
+- Based on the understanding of the cricketing terminologies, it can be inferred that PC2 is heavily influenced by the variables that __relate to bowling in a game of cricket__.
+
+- On the other hand, PC1 is primarily influenced by variables which __relate to batting in the game__.
+
+- There are variables such as __"Start","Economy" and "Average"__ whose loading vector lengths are __considerably smaller__ than the other variables. This indicates that the effect of these variables are much __lower than some of the other variables mentioned in the plot.__
+
+- There also appears to be __lower correlation among each variable in the direction of PC1__ as the loading directions of the variables (shown by the <span style=color:red>red arrows</span>) are __much more spread out than the case for variables in the PC2 direction.__ This additionally reinforces the fact that PC1 accounts for majority of the variance in the data (nearly 45 %).
+
+:::
+
+### e) Main patterns observed during PCA 
+
+```{r}
+#| label: fig-pcaplayer
+#| fig-cap: "PC distribution of each player"
+df_cricket_pca <- cbind(df_cricket,cricket_pca$x[,1:2])
+
+pl <- ggplot(data = df_cricket_pca,aes(x = PC1,y =PC2,text = Player)) + geom_point() + 
+  labs(x = "PC1 (44.69%)",y = "PC2 (21.2 %)",title = "PC distribution of cricket players") + 
+  geom_vline(xintercept = -7.5, linetype = 3,color = "red",size = 1,alpha = 0.4) + 
+  geom_hline(yintercept = -7.5,linetype = 3,color = "red",size = 1,alpha = 0.4) +
+  theme_minimal() 
+
+ggplotly(pl,tooltip = c("Player","PC1","PC2"))
 
 
+```
 
-#### d) Interpretation of the PCs
+:::{.callout-note}
+# Key takeaway
+The distribution of data points as observed in the interactive illustration @fig-pcaplayer provides us with an understanding of the abilities of each player. Some of the key observations from the plot are as follows:
 
+- Majority of the data points cluster towards the top right of the plot, __indicating the general abilities of the players lie in this region.__ Based on this, we can conclude that the PC1 and PC2 attributes of most players would list close to the origin point (0,0).
 
+- However, when observing the players on the X-axis (along the PC1 axis), we can observe that there are about three players above the <span style=color:red>red line</span>. These players are namely __[BL Mooney](https://www.espncricinfo.com/cricketers/beth-mooney-381258), [MM Lanning](https://en.wikipedia.org/wiki/Meg_Lanning) and [AJ Healy](https://www.espncricinfo.com/cricketers/alyssa-healy-275486).__ As already explained in @sec-interpretation, a higher magnitude of value in PC1 relates to batting attributes. __Based on the PC1 magnitude and the loading vectors of these players, this indicates that these players would generally feature as the top batters in the team.__
+
+- When observing the players on the Y-axis (along the PC2 axis) and particularly at the points above the threshold <span style=color:red>red line</span>, we observe the player __[M Schutt](https://www.espncricinfo.com/cricketers/megan-schutt-420314)__ has a high PC2 magnitude while the PC1 magnitude is much lower in comparison. As discussed in @sec-interpretation, PC2 is heavily influenced by variables which are related to bowling. __This indicates that M Schutt's attributes would most likely make her one of the top bowlers in the team.__
+
+- There are however players who may have __balanced attributes, indicating they're equally able to contribute to the batting and bowling__. These players are generally termed as "All-rounders". While looking at the data, we can clearly point out __the player [EA Perry](https://en.wikipedia.org/wiki/Ellyse_Perry) who has a high PC1 and a PC2 score.__ This indicates that she is expected to be the top most __all-rounder in the Australian Women's Cricket team.__
+
+:::
 ## References
 
 Hadley Wickham, Dianne Cook, Heike Hofmann, Andreas Buja
