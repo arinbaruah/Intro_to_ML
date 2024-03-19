@@ -79,7 +79,6 @@ library(uwot)
 library(animation)
 library(magick)
 library(ggfortify)
-library(mulgar)
 library(plotly)
 ```
 
@@ -601,13 +600,48 @@ The distribution of data points as observed in the interactive illustration @fig
 :::
 ## References
 
-Hadley Wickham, Dianne Cook, Heike Hofmann, Andreas Buja
+1. __tourr__: Hadley Wickham, Dianne Cook, Heike Hofmann, Andreas Buja
   (2011). tourr: An R Package for Exploring Multivariate
   Data with Projections. Journal of Statistical Software,
   40(2), 1-18. URL http://www.jstatsoft.org/v40/i02/.
   
-Kuhn et al., (2020). Tidymodels: a collection of
+2. __tidymodels__:  Kuhn et al., (2020). Tidymodels: a collection of
   packages for modeling and machine learning using
   tidyverse principles. https://www.tidymodels.org  
   
-OpenAI (2023). ChatGPT (version 3.5) [Large language model]. https://chat.openai.com/chat, full script of conversation [here]( https://chat.openai.com/share/746c4f77-9b7b-4c3b-867a-826f639b91aa)
+3. __tidyverse__: Wickham H, Averick M, Bryan J, Chang W, McGowan LD, François R, Grolemund G, Hayes A, Henry L, Hester J, Kuhn M,
+  Pedersen TL, Miller E, Bache SM, Müller K, Ooms J, Robinson D, Seidel DP, Spinu V, Takahashi K, Vaughan D, Wilke C,
+  Woo K, Yutani H (2019). “Welcome to the tidyverse.” _Journal of Open Source Software_, *4*(43), 1686.
+  doi:10.21105/joss.01686 <https://doi.org/10.21105/joss.01686>.
+  
+4. __kableExtra__: Zhu H (2024). _kableExtra: Construct Complex Table with 'kable' and Pipe Syntax_. R package version 1.4.0,
+  <https://CRAN.R-project.org/package=kableExtra>.
+  
+5. __caret__: Kuhn, M. (2008). Building Predictive Models in R Using the caret Package. Journal of Statistical Software, 28(5),
+  1–26. https://doi.org/10.18637/jss.v028.i05
+
+6. __plotROC__: Michael C. Sachs (2017). plotROC: A Tool for Plotting ROC Curves. Journal of Statistical Software, Code Snippets,
+  79(2), 1-19. doi:10.18637/jss.v079.c02
+
+7. __mulgar__: Cook D, Laa U (2023). _mulgar: Functions for Pre-Processing Data for Multivariate Data Visualisation using Tours_. R
+  package version 1.0.2, <https://CRAN.R-project.org/package=mulgar>.
+  
+8. __uwot__: Melville J (2023). _uwot: The Uniform Manifold Approximation and Projection (UMAP) Method for Dimensionality
+  Reduction_. R package version 0.1.16, <https://CRAN.R-project.org/package=uwot>.
+  
+9. __GGally__: Schloerke B, Cook D, Larmarange J, Briatte F, Marbach M, Thoen E, Elberg A, Crowley J (2024). _GGally: Extension to
+  'ggplot2'_. R package version 2.2.1, <https://CRAN.R-project.org/package=GGally>.
+
+10. __animation__: Yihui Xie (2013). animation: An R Package for Creating Animations and Demonstrating Statistical Methods. Journal of
+  Statistical Software, 53(1), 1-27. URL https://doi.org/10.18637/jss.v053.i01.
+  
+11. __magick__: Ooms J (2024). _magick: Advanced Graphics and Image-Processing in R_. R package version 2.8.3,
+  <https://CRAN.R-project.org/package=magick>.
+
+12. __plotly__: C. Sievert. Interactive Web-Based Data Visualization with R, plotly, and shiny. Chapman and Hall/CRC Florida, 2020.
+
+13. __ggfortify__: Yuan Tang, Masaaki Horikoshi, and Wenxuan Li. "ggfortify: Unified Interface to Visualize Statistical Result of Popular R Packages." The R Journal 8.2 (2016): 478-489.
+
+
+
+
