@@ -557,15 +557,15 @@ Based on @fig-biplot, some of the key observations are as follows:
 
 ```{r}
 #| label: fig-scree
-#| fig-cap: "Scree plot for plotting the variance explained by each PC"
+#| fig-cap: "Scree plot for plotting the variance explained by each addition of PC"
 
 x_scale <- 1:21
-ggscree(cricket_pca, q=21) + labs(x = "Number of PCs",y = "Variance explained",title = "Scree plot for the number of PC determination") + geom_vline(xintercept = 4,linetype = 3,color = "red",size = 1.5) + theme_classic() + theme(plot.title = element_text(hjust = 0.5)) +
+ggscree(cricket_pca, q=21) + labs(x = "Number of PCs",y = "Variance explained",title = "Scree plot for the number of PC determination") + geom_vline(xintercept = 4,linetype = 3,color = "red",size = 1.5) + geom_vline(xintercept = 3,linetype = 3,color = "darkgreen",size = 1.5) + theme_classic() + theme(plot.title = element_text(hjust = 0.5)) +
   scale_x_continuous(breaks = x_scale)
 
 
 ```
-The scree plot as illustrated by @fig-scree indicates the variance explained with the addition of each PC. Based on this plot and @tbl-summary, we can clearly observe that the first __4 PCs are able to explain nearly 81% of variance in the data.__ An addition of the another PC is observed explain further variance, but to a lower degree.This indicates that adding more PCs isn't necessarily explaining much variance in the data but making the model complex and difficult to interpret.
+The scree plot as illustrated by @fig-scree indicates the variance explained with the addition of each PC. Based on this plot and @tbl-summary, we can clearly observe that the first __3 to 4 PCs are able to explain nearly 81% of variance in the data.__ An addition of the another PC is observed explain further variance, but to a lower degree.This indicates that adding more PCs isn't necessarily explaining much variance in the data but making the model complex and difficult to interpret.
 
 The guide line shaded in gray color is computed by performing PCA on 100 samples from a standard P-dimensional normal distribution. A deviation of the black line from the gray line indicates that the variance explained by the PCAs are indeed significant and need to be considered in our analysis.
 
@@ -573,11 +573,54 @@ Additionally, we observe that the PCAs from the 5th PCA and there on follow the 
 
 :::{.callout-note}
 # Key takeaway
-For the current data in hand, __we will reduce the overall dimensions of the data to 4 by utilising the first 4 PCs__.
+
+Upon analysing the Scree plot, we can choose the first __3 or 4 PCs__ as our desired choice of PCs after successful dimensional reduction.
+
+Usage of __first 3 PCs would help us explain 75% of the variance but also make the model less complex than a model with 4 PCs.__
+
+Choosing the __first 4 PCs would allow us to explain 81% of the variance at the cost of higher complexity.__
+
+Hence, the final choice of the number of PCs to be selected would depend on either if we want to prioritise low complexity in the model or prioritise the maximum variance to be explained.
 
 :::
 
-### d) Interpretation of the PCs {#sec-interpretation}
+
+While we have already studied the model using 2 PCs through @fig-biplot, we can additionally visualise the first 3 PCs using an interactive 3D scatter plot as shown in @fig-scatter3d
+
+
+```{r}
+#| label: fig-scatter3d
+#| fig-cap: '3D Scatter plot matrix for PC distribution of each player'
+
+df_cricket_new <- read_csv("cricket_pca.csv")
+df_cricket_new$Total_PCA <- abs(df_cricket_new$PC1) + abs(df_cricket_new$PC2) + abs(df_cricket_new$PC3)
+
+pl2 <- plot_ly(df_cricket_new, x = ~PC1, y = ~PC2, z = ~PC3,
+               opacity = 1, hoverinfo = "text",
+               color = df_cricket_new$Total_PCA,colors = "viridis",
+               text = ~paste("Player: ", Player, "<br>",
+                             "PC1: ", round(PC1,3), "<br>",
+                             "PC2: ", round(PC2,3), "<br>",
+                             "PC3: ", round(PC3,3), "<br>")) %>%
+  layout(scene = list(xaxis = list(title = "PC1"),
+                      yaxis = list(title = "PC2"),
+                      zaxis = list(title = "PC3")),
+         margin = list(l = 0, r = 0, b = 0.5, t = 0),
+         showlegend = FALSE)
+
+pl2
+```
+
+:::{.callout-note}
+# Key takeaway
+
+Based on our analysis of the 3 PCs in @fig-scatter3d, we can observe that while most players cluster into one region as shown by the dark blue shaded points, there are however some outliers in the data which suggest that these players have better cricketing statistics in certain domains than the rest of the set of players.
+
+These players are highlighted through the light colored data points in the plot and are analysed further in @sec-interpretation.
+:::
+
+
+### d) Interpretation of the PCs 
 
 The biplot which has been illustrated through @fig-biplot allows us to understand the magnitude of contribution through the length of the loading vectors and the correlation among the variables by observing the angle made by each of the loading vectors to one another. Upon closely examining these loading vectors, we can obtain a few key interpretations of the PCs listed below.
 
@@ -594,7 +637,7 @@ The biplot which has been illustrated through @fig-biplot allows us to understan
 
 :::
 
-### e) Main patterns observed during PCA 
+### e) Main patterns observed during PCA {#sec-interpretation}
 
 ```{r}
 #| label: fig-pcaplayer
@@ -623,7 +666,7 @@ pl <- ggplot(data = df_cricket_pca,aes(x = PC1,y =PC2,text = Player)) + geom_poi
    annotate("text", x = -5, y= 0, 
            colour = "black",
            alpha=0.6,
-           label='General players',
+           label='General ability players',
            size = unit(5, "pt")) +
   theme_minimal() 
 
@@ -652,9 +695,8 @@ The distribution of data points as observed in the interactive illustration @fig
   Data with Projections. Journal of Statistical Software,
   40(2), 1-18. URL http://www.jstatsoft.org/v40/i02/.
   
-2. __tidymodels__:  Kuhn et al., (2020). Tidymodels: a collection of
-  packages for modeling and machine learning using
-  tidyverse principles. https://www.tidymodels.org  
+2. __tidymodels__:  Kuhn et al., (2020). Tidymodels: a collection of packages for modeling and machine learning using
+  tidyverse principles. https://www.tidymodels.org.  
   
 3. __tidyverse__: Wickham H, Averick M, Bryan J, Chang W, McGowan LD, François R, Grolemund G, Hayes A, Henry L, Hester J, Kuhn M,
   Pedersen TL, Miller E, Bache SM, Müller K, Ooms J, Robinson D, Seidel DP, Spinu V, Takahashi K, Vaughan D, Wilke C,
@@ -665,10 +707,10 @@ The distribution of data points as observed in the interactive illustration @fig
   <https://CRAN.R-project.org/package=kableExtra>.
   
 5. __caret__: Kuhn, M. (2008). Building Predictive Models in R Using the caret Package. Journal of Statistical Software, 28(5),
-  1–26. https://doi.org/10.18637/jss.v028.i05
+  1–26. https://doi.org/10.18637/jss.v028.i05.
 
 6. __plotROC__: Michael C. Sachs (2017). plotROC: A Tool for Plotting ROC Curves. Journal of Statistical Software, Code Snippets,
-  79(2), 1-19. doi:10.18637/jss.v079.c02
+  79(2), 1-19. doi:10.18637/jss.v079.c02.
 
 7. __mulgar__: Cook D, Laa U (2023). _mulgar: Functions for Pre-Processing Data for Multivariate Data Visualisation using Tours_. R
   package version 1.0.2, <https://CRAN.R-project.org/package=mulgar>.
@@ -688,6 +730,10 @@ The distribution of data points as observed in the interactive illustration @fig
 12. __plotly__: C. Sievert. Interactive Web-Based Data Visualization with R, plotly, and shiny. Chapman and Hall/CRC Florida, 2020.
 
 13. __ggfortify__: Yuan Tang, Masaaki Horikoshi, and Wenxuan Li. "ggfortify: Unified Interface to Visualize Statistical Result of Popular R Packages." The R Journal 8.2 (2016): 478-489.
+
+14. OpenAI (2023). ChatGPT (version 3.5) [Large language model]. https://chat.openai.com/chat, full script of conversation [here](https://chat.openai.com/share/34c580ef-3332-4db5-8de3-7ff6b80a4a09)
+
+
 
 
 
