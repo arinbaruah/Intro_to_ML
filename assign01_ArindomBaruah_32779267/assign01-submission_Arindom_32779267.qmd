@@ -63,9 +63,10 @@ draw_confusion_matrix <- function(cm) {
 }  
 ```
 
-
+# Libraries used
 
 ```{r}
+#| echo: true
 library(tidyverse)
 library(tidymodels)
 library(ggplot2)
